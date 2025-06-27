@@ -528,7 +528,7 @@
   
 
   
-    <!-- <section id="appointment" class="jarallax"
+    <section id="appointment" class="jarallax"
       style="background-image: url(images/background-22.jpg); background-repeat: no-repeat; background-position: center;">
   
       <div class="container-lg padding-medium">
@@ -561,98 +561,13 @@
                 class="form-control w-100 rounded-0 border-0 ps-4 py-3 mb-2 ">
             </div>
   
-            <div class="col-md-12 col-sm-12 mb-4">
-              <textarea type="text" name="message" placeholder="Your message" rows="4"
-                class="w-100 border-0 ps-4 py-2  "></textarea>
-            </div>
+      
           </form>
   
           <button class="btn btn-light mt-3" href="#">Book Now</button>
         </div>
   
       </div>
-      </div>
-    </section> -->
-    <section id="appointment" class="jarallax">
-
-      <div id="login-popup" class=" show" tabindex="-1" aria-labelledby="loginModalLabel" aria-modal="true" role="dialog" style="display: block; background-color: rgba(0, 0, 0, 0.5);" x-data="{ activeTab: 'login' }">
-        <div class="modal-dialog modal-dialog-centered" style="max-width: 28rem;">
-          <div class="modal-content">
-            <!-- Close Button -->
-      
-            <div class="modal-body p-4">
-              <!-- Tabs -->
-             
-              <!-- Login Form -->
-              <div x-show="activeTab === 'login'" class="mt-3">
-                <div class="text-center mb-3">
-                  <h3 class="fs-4 fw-semibold text-white">Book an Appointment</h3>
-                </div>
-      
-                <!-- Social Login Buttons -->
-           
-      
-            
-                <!-- Login Form Fields -->
-                <form action="/api/login" method="POST" class="row g-3">
-                  <div class="col-12">
-                    <label for="login-email" class="visually-hidden">Email address</label>
-                    <input 
-                      name="email" 
-                      type="email" 
-                      autocomplete="email" 
-                      required 
-                      class="form-control form-control-sm" 
-                      id="login-email" 
-                      placeholder="Email Address">
-                  </div>
-                  <div class="col-12">
-                    <label for="login-password" class="visually-hidden">Password</label>
-                    <input 
-                      name="password" 
-                      type="password" 
-                      autocomplete="current-password" 
-                      required 
-                      class="form-control form-control-sm" 
-                      id="login-password" 
-                      placeholder="Password">
-                  </div>
-                  <div class="col-12">
-                    <label for="login-date" class="visually-hidden">Date</label>
-                    <input 
-                      name="date" 
-                      type="date" 
-                      required 
-                      class="form-control form-control-sm" 
-                      id="login-date" 
-                      placeholder="Select Date">
-                  </div>
-                  <div class="col-12">
-                    <label for="login-time" class="visually-hidden">Time</label>
-                    <input 
-                      name="time" 
-                      type="time" 
-                      required 
-                      class="form-control form-control-sm" 
-                      id="login-time" 
-                      placeholder="Select Time">
-                  </div>
-              
-                  <div class="col-12">
-                    <button 
-                      type="submit" 
-                      class="btn btn-dark w-100 btn-sm fw-medium">
-                      Book Appointment
-                    </button>
-                  </div>
-                </form>
-              </div>
-      
-
-         
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   
