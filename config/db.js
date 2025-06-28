@@ -1,3 +1,3 @@
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://127.0.0.1:27017/saloon", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://afrirewards:Afri12345Rewards@afrirewards.da6lul0.mongodb.net/saloon", { useNewUrlParser: true, useUnifiedTopology: true });
 module.exports = mongoose;
