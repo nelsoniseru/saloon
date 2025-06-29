@@ -270,9 +270,9 @@
         
         
             <!-- Pricing Cards -->
-            <div class="row row-cols-2 row-cols-md-2 g-2">
+            <div class="row  flex-column flex-md-row">
               <!-- Starter Plan -->
-              <div class="col-6">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
                 <div class="card h-100 border-light shadow-sm">
                   <div class="card-body p-4">
                     <h2 class="card-title fs-4 fw-bold text-dark">Home Service</h2>
@@ -337,7 +337,7 @@
               <!-- Superior Plan -->
         
               <!-- Shipper Plan -->
-              <div class="col-6">
+              <div class="col-12 col-md-6 mb-3 mb-md-0 ">
                 <div class="card h-100 border-light shadow-sm">
                   <div class="card-body p-4">
                     <h2 class="card-title fs-4 fw-bold text-dark">Office Service</h2>
@@ -529,12 +529,40 @@
     <script src="https://js.paystack.co/v2/inline.js"> </script>
 
     <script>
+     async function getUser() {
+      const getTokenFromCookie = () => {
+  const match = document.cookie.match(/(?:^|;\s*)token=([^;]+)/);
+  return match ? match[1] : null;
+};
 
-      function isLoggedIn() {
+const data = {
+  token: getTokenFromCookie()
+};
+
+
+      try {
+        const response = await fetch('/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        console.log('Token response:', result);
+        return result
+      } catch (error) {
+        console.error('Error fetching token:', error);
+      }
+     }   
+    
+     function isLoggedIn() {
+   
         return document.cookie.includes('token');
       }
   
-      function payWithPaystack() {
+     async function payWithPaystack() {
         const form = document.getElementById('bookingForm');
         const address = form.address.value;
         const date = form.date.value;
@@ -551,11 +579,12 @@
           window.location.href = '/login?resume=1';
           return;
         }
-  
+        const user = await getUser();
+        
         // If logged in, continue with payment
         const handler = PaystackPop.setup({
           key: 'pk_test_9fdf369bc0d71598bacbc34a4215690521c80938', // Replace with your public key
-          email: 'customer@example.com', // Replace with actual user email
+          email:user.data.email, // Replace with actual user email
           amount: 500000, // ₦5000 in kobo
           currency: 'NGN',
           ref: '' + Math.floor(Math.random() * 1000000000 + 1),
@@ -566,10 +595,39 @@
               { display_name: "Time", variable_name: "time", value: time }
             ]
           },
-          callback: function(response) {
-            alert('Payment successful! Reference: ' + response.reference);
+          callback: async function(response) {
+          //  alert('Payment successful! Reference: ' + response.reference);
             localStorage.removeItem('pendingBooking');
-            // Optionally send booking + payment info to your server here
+            const getTokenFromCookie = () => {
+  const match = document.cookie.match(/(?:^|;\s*)token=([^;]+)/);
+  return match ? match[1] : null;
+};
+
+const data2 = {
+  token: getTokenFromCookie()
+};
+const data = {
+   address: document.querySelector('[name="address"]').value,
+   time: document.querySelector('[name="time"]').value,
+   date: document.querySelector('[name="date"]').value,
+   reference: response.reference
+
+}
+            try {
+        const response = await fetch('/booking', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization":`Bearer ${data2.token}`
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        console.log('Token response:', result);
+      } catch (error) {
+        console.error('Error fetching token:', error);
+      }
           },
           onClose: function() {
             alert('Transaction was not completed.');
@@ -597,7 +655,7 @@
 
 
 
-function payWithPaystackSubscribe() {
+async function payWithPaystackSubscribe() {
 
    
   if (!isLoggedIn()) {
@@ -606,10 +664,11 @@ function payWithPaystackSubscribe() {
           window.location.href = '/login?resume=1';
           return;
         }
+        const user = await getUser();
 
   const handler = PaystackPop.setup({
   key: 'pk_test_9fdf369bc0d71598bacbc34a4215690521c80938',
-  email: 'customer@example.com',
+  email: user.data.email,
   amount: 0, 
   plan: 'PLN_a9yr5l7v8siagt1',
 channels: ['card'], 
@@ -624,7 +683,7 @@ handler.openIframe();
 }
 
 
-function payWithPaystackSubscribe2() {
+async function payWithPaystackSubscribe2() {
      
   if (!isLoggedIn()) {
           // Save booking data and redirect to login
@@ -632,10 +691,11 @@ function payWithPaystackSubscribe2() {
           window.location.href = '/login?resume=1';
           return;
         }
+        const user = await getUser();
 
 const handler = PaystackPop.setup({
 key: 'pk_test_9fdf369bc0d71598bacbc34a4215690521c80938',
-email: 'customer@example.com',
+email: user.data.email,
 amount: 0, 
 plan: 'PLN_sszple1j0oce5t3',
 channels: ['card'], 

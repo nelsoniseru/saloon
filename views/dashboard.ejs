@@ -27,6 +27,8 @@
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- Nucleo Icons -->
     <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
     <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- Popper -->
     <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -60,6 +62,15 @@
             </a>
         </li>
 
+  
+        <li class="mt-0.5 w-full">
+            <a href="/logout" class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="./pages/billing.html">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
+                <i class="ni ni-credit-card text-blue-500 text-sm leading-normal"></i>       
+            </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Subscription</span>
+            </a>
+          </li>
           <li class="mt-0.5 w-full">
             <a href="/logout" class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="./pages/billing.html">
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
@@ -213,7 +224,7 @@
         <!-- row 1 -->
         <div class="flex flex-wrap -mx-3">
           <!-- card1 -->
-       
+       <h3 class="text-white">Welcome <%=userd.name%></h3>
        
 
      
@@ -226,129 +237,42 @@
 
         <!-- cards row 3 -->
 
-        <div class="flex flex-wrap mt-6 -mx-3">
-          <div class="w-full max-w-full px-3 mt-0 mb-6 lg:mb-0 lg:w-12 lg:flex-none">
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl dark:bg-gray-950 border-black-125 rounded-2xl bg-clip-border">
-              <div class="p-4 pb-0 mb-0 rounded-t-4">
-                <div class="flex justify-between">
-                  <h6 class="mb-2 dark:text-white">Transaction</h6>
-                </div>
-              </div>
-              <div class="overflow-x-auto">
-                <table class="items-center w-full mb-4 align-top border-collapse border-gray-200 dark:border-white/40">
-                  <thead>
+        <div class="overflow-x-auto rounded-lg shadow-sm border border-gray-300 mt-40" style="background-color: #f8f9fa; margin-top:5rem;">
+            <table id="customersTable" class="w-full text-sm text-gray-800">
+                <thead class="bg-[#f8f9fa]">
+                  <tr>
+                    <th class="px-4 py-3 border border-gray-300 text-left text-xs font-semibold uppercase text-gray-700 whitespace-nowrap">Transaction ID</th>
+                    <th class="px-4 py-3 border border-gray-300 text-center text-xs font-semibold uppercase text-gray-700 whitespace-nowrap">Amount</th>
+                    <th class="px-4 py-3 border border-gray-300 text-center text-xs font-semibold uppercase text-gray-700 whitespace-nowrap">Transaction Type</th>
+                    <th class="px-4 py-3 border border-gray-300 text-center text-xs font-semibold uppercase text-gray-700 whitespace-nowrap">Time</th>
+                    <th class="px-4 py-3 border border-gray-300 text-center text-xs font-semibold uppercase text-gray-700 whitespace-nowrap">Date</th>
+                    <th class="px-4 py-3 border border-gray-300 text-center text-xs font-semibold uppercase text-gray-700 whitespace-nowrap">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (t && t.length > 0) { %>
+                    <% t.forEach(tx => { %>
+                      <tr class="hover:bg-gray-100 transition">
+                        <td class="px-4 py-3 border border-gray-300 text-left font-medium whitespace-nowrap"><%= tx.reference %></td>
+                        <td class="px-4 py-3 border border-gray-300 text-center whitespace-nowrap">₦<%= tx.amount ?(tx.amount / 100).toFixed(2): 'pending'  %></td>
+                        <td class="px-4 py-3 border border-gray-300 text-center whitespace-nowrap"><%= tx.transaction_type || 'N/A' %></td>
+                        <td class="px-4 py-3 border border-gray-300 text-center whitespace-nowrap"><%= tx.time ? new Date(tx.time).toLocaleTimeString() : 'N/A' %></td>
+                        <td class="px-4 py-3 border border-gray-300 text-center whitespace-nowrap"><%= tx.date ? new Date(tx.date).toLocaleDateString() : 'N/A' %></td>
+                        <td class="px-4 py-3 border border-gray-300 text-center whitespace-nowrap"><%= tx.status%></td>
+                      </tr>
+                    <% }) %>
+                  <% } else { %>
                     <tr>
-                      <th class="p-2 text-start text-xs font-bold uppercase text-gray-600 dark:text-white/70">Name</th>
-                      <th class="p-2 text-center text-xs font-bold uppercase text-gray-600 dark:text-white/70">Email</th>
-                      <th class="p-2 text-center text-xs font-bold uppercase text-gray-600 dark:text-white/70">Contact</th>
-                      <th class="p-2 text-center text-xs font-bold uppercase text-gray-600 dark:text-white/70">Location</th>
+                      <td colspan="5" class="px-4 py-3 text-center text-gray-500">No data found</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="flex items-center px-2 py-1">
-                          <div class="text-center">
-                            <h6 class="mb-0 text-sm leading-normal dark:text-white">United States</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">2500</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">$230,900</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">29.9%</h6>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                        <div class="flex items-center px-2 py-1">
-                          <div class="text-center">
-                            <h6 class="mb-0 text-sm leading-normal dark:text-white">Germany</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">3.900</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">$440,000</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">40.22%</h6>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                        <div class="flex items-center px-2 py-1">
-                          <div class="text-center">
-                            <h6 class="mb-0 text-sm leading-normal dark:text-white">Great Britain</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">1.400</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">$190,700</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">23.44%</h6>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="p-2 align-middle bg-transparent border-0 w-3/10 whitespace-nowrap">
-                        <div class="flex items-center px-2 py-1">
-                          <div class="text-center">
-                            <h6 class="mb-0 text-sm leading-normal dark:text-white">Brazil</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-0 whitespace-nowrap">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">562</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-0 whitespace-nowrap">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">$143,960</h6>
-                        </div>
-                      </td>
-                      <td class="p-2 text-sm leading-normal align-middle bg-transparent border-0 whitespace-nowrap">
-                        <div class="text-center">
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">32.14%</h6>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                  <% } %>
+                </tbody>
+              </table>
               
-            </div>
           </div>
-    
-        </div>
+          
+          
+          
 
       </div>
       <!-- end cards -->
@@ -441,29 +365,60 @@
     function payWithPaystack() {
  
       const pending = localStorage.getItem('pendingBooking');
-      const data = JSON.parse(pending);
+      const data3 = JSON.parse(pending);
 
       // If logged in, continue with payment
       const handler = PaystackPop.setup({
         key: 'pk_test_9fdf369bc0d71598bacbc34a4215690521c80938', // Replace with your public key
-        email: 'customer@example.com', // Replace with actual user email
+        email: '<%=user.email%>', // Replace with actual user email
         amount: 500000, // ₦5000 in kobo
         currency: 'NGN',
         ref: '' + Math.floor(Math.random() * 1000000000 + 1),
         metadata: {
           custom_fields: [
-            { display_name: "Address", variable_name: "address", value: data.address },
-            { display_name: "Date", variable_name: "date", value: data.date },
-            { display_name: "Time", variable_name: "time", value: data.time }
+            { display_name: "Address", variable_name: "address", value: data3.address },
+            { display_name: "Date", variable_name: "date", value: data3.date },
+            { display_name: "Time", variable_name: "time", value: data3.time }
           ]
         },
-        callback: function(response) {
+        callback: async function(response) {
           alert('Payment successful! Reference: ' + response.reference);
           localStorage.removeItem('pendingBooking');
-          // Optionally send booking + payment info to your server here
-        },
-        onClose: function() {
+            const getTokenFromCookie = () => {
+  const match = document.cookie.match(/(?:^|;\s*)token=([^;]+)/);
+  return match ? match[1] : null;
+};
+
+const data2 = {
+  token: getTokenFromCookie()
+};  
+const data = {
+   address:data3.address ,
+   time: data3.time,
+   date: data3.date,
+   reference: response.reference
+
+}
+try {
+        const response = await fetch('/booking', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization":`Bearer ${data2.token}`
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        console.log('Token response:', result);
+      } catch (error) {
+        console.error('Error fetching token:', error);
+      }  
+
+},
+        onClose: async function() {
           alert('Transaction was not completed.');
+      
         }
       });
 
@@ -489,7 +444,7 @@
 
 const handler = PaystackPop.setup({
 key: 'pk_test_9fdf369bc0d71598bacbc34a4215690521c80938',
-email: 'customer@example.com',
+email:  '<%=user.email%>',
 amount: 0, 
 plan: 'PLN_a9yr5l7v8siagt1',
 channels: ['card'], 
@@ -520,7 +475,7 @@ function payWithPaystackSubscribe2() {
 
 const handler = PaystackPop.setup({
 key: 'pk_test_9fdf369bc0d71598bacbc34a4215690521c80938',
-email: 'customer@example.com',
+email:'<%=user.email%>',
 amount: 0, 
 plan: 'PLN_sszple1j0oce5t3',
 channels: ['card'], 
@@ -539,4 +494,20 @@ handler.openIframe();
 
 
   
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#customersTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        lengthChange: false,
+        language: {
+          search: "Search:",
+          emptyTable: "No customers found."
+        }
+      });
+    });
   </script>

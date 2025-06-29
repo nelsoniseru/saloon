@@ -11,6 +11,8 @@ router.get('/login', controller.loginPage);
 router.get('/register', controller.registerPage);
 router.get('/dashboard',auth, controller.dashboard);
 router.get('/user-profile',auth, controller.userProfile);
+router.get('/dashboard-prof',auth, controller.dash);
+router.post('/booking',auth, controller.Booking);
 const schema = Joi.object({
     email: Joi.string().email().required().messages({
         'string.empty': 'Email cannot be empty',
@@ -51,7 +53,6 @@ const schema = Joi.object({
 
   router.post('/login', async (req, res) => {
     const { error } = schema.validate(req.body);
-    console.log(error)
     if (error)  return  res.render('login', {
         error:error.details[0].message,
         success: null
@@ -135,4 +136,20 @@ const schema = Joi.object({
     res.clearCookie('token', { path: '/' });
      res.redirect('/login');
   });
+
+  
+   router.post("/token",(req,res)=> {
+    const token = req.body.token;
+    if (!token) return res.redirect('/login');
+  
+    jwt.verify(token, "nelsoniseru", (err, user) => {
+      if (err) {
+        res.clearCookie('token', { path: '/' });
+        return res.send({status:false,message:"invalid token"});
+      }
+      req.user = user;
+      return res.send({status:true,data:req.user});
+    })
+  })
+  
 module.exports = router;
