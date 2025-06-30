@@ -92,6 +92,8 @@ const schema = Joi.object({
 
   
   router.post('/register', async (req, res) => {
+    console.log(req.body)
+
     const { error } = registerSchema.validate(req.body);
     if (error) {
       return res.render('register', {
