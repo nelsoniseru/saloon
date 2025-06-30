@@ -10,6 +10,8 @@ const User = require('../models/users');
 router.get('/login', controller.loginPage);
 router.get('/register', controller.registerPage);
 router.get('/dashboard',auth, controller.dashboard);
+router.get('/transactions',auth, controller.tdashboard);
+router.get('/customers',auth, controller.cdashboard);
 router.get('/user-profile',auth, controller.userProfile);
 router.get('/dashboard-prof',auth, controller.dash);
 router.post('/booking',auth, controller.Booking);

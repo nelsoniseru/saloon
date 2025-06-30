@@ -201,28 +201,23 @@
               <li class="nav-item px-3 py-2 py-lg-0">
                 <a class="nav-link fw-normal active p-0" aria-current="page" href="index.html">Home</a>
               </li>
-          
-              <li class="nav-item px-3 py-2 py-lg-0 dropdown">
-                <a class="nav-link fw-normal p-0 dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                  aria-expanded="false">Membership</a>
-                <ul class="dropdown-menu dropdown-menu-end animate slide mt-3 border-0 shadow">
-                  <li><a href="/register" class="dropdown-item">Register <span
-                        class="badge bg-secondary fw-normal">Pro</span></a></li>
-                  <li><a href="/login" class="dropdown-item">Login <span
-                        class="badge bg-secondary fw-normal">Pro</span></a></li>
-                      
-                </ul>
-              </li>
-               
-              <li class="nav-item px-3 py-2 py-lg-0 dropdown">
-                <a class="nav-link fw-normal p-0 dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                  aria-expanded="false">User profile</a>
-                <ul class="dropdown-menu dropdown-menu-end animate slide mt-3 border-0 shadow">
-               
-                        <li><a href="/dashboard-prof" class="dropdown-item">Dashboard <span
-                          class="badge bg-secondary fw-normal">Pro</span></a></li>
-                </ul>
-              </li>
+          <!-- Shown when NOT logged in -->
+<li id="guestMenu" class="nav-item px-3 py-2 py-lg-0 dropdown">
+  <a class="nav-link fw-normal p-0 dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Membership</a>
+  <ul class="dropdown-menu dropdown-menu-end animate slide mt-3 border-0 shadow">
+    <li><a href="/register" class="dropdown-item">Register <span class="badge bg-secondary fw-normal">Pro</span></a></li>
+    <li><a href="/login" class="dropdown-item">Login <span class="badge bg-secondary fw-normal">Pro</span></a></li>
+  </ul>
+</li>
+
+<!-- Shown when logged in -->
+<li id="userMenu" class="nav-item px-3 py-2 py-lg-0 dropdown" style="display: none;">
+  <a class="nav-link fw-normal p-0 dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">User Profile</a>
+  <ul class="dropdown-menu dropdown-menu-end animate slide mt-3 border-0 shadow">
+    <li><a href="/dashboard-prof" class="dropdown-item">Dashboard <span class="badge bg-secondary fw-normal">Pro</span></a></li>
+  </ul>
+</li>
+
               <li class="nav-item px-3 py-2 py-lg-0">
                 <a class="nav-link fw-normal p-0" href="contact.html">Contact</a>
               </li>
@@ -251,3 +246,22 @@
       </div>
     </nav>
   </header>
+  <script>
+    function isLoggedIn() {
+      return document.cookie.includes('token=');
+    }
+  
+    document.addEventListener('DOMContentLoaded', () => {
+      const guestMenu = document.getElementById('guestMenu');
+      const userMenu = document.getElementById('userMenu');
+  
+      if (isLoggedIn()) {
+        guestMenu.style.display = 'none';
+        userMenu.style.display = 'block';
+      } else {
+        guestMenu.style.display = 'block';
+        userMenu.style.display = 'none';
+      }
+    });
+  </script>
+  

@@ -27,8 +27,48 @@ let b = await Transaction.create({
 
 exports.dashboard = async (req, res) =>{
  let customers = await User.find({role:"user"})
- let t = await Transaction.find({user:req.user.id}).sort({   createdAt: -1 });
-  res.render('admin-dashboard',{customers,user:req.user,t});
+ let t = await Transaction.find({transaction_type:"booking"}).populate("user").sort({ createdAt: -1 });
+ let a = await Transaction.find().then(transactions => {
+  const totalAmount = transactions.reduce((sum, tx) => sum + (tx.amount || 0), 0);
+  const totalInNaira = totalAmount / 100;
+  
+  console.log('Total Amount in Naira:', totalInNaira);
+  return totalInNaira;
+});
+
+let s = await Transaction.find({transaction_type:"subscription"})
+let u = await User.find({role:"user"})
+
+  res.render('admin-dashboard',{customers,user:req.user,t,a,s:s.length,u:u.length});
+}
+exports.tdashboard = async (req, res) =>{
+  let customers = await User.find({role:"admin"})
+  let a = await Transaction.find().then(transactions => {
+    const totalAmount = transactions.reduce((sum, tx) => sum + (tx.amount || 0), 0);
+    const totalInNaira = totalAmount / 100;
+    
+    console.log('Total Amount in Naira:', totalInNaira);
+    return totalInNaira;
+  });
+  
+  let s = await Transaction.find({transaction_type:"subscription"})
+  let u = await User.find({role:"user"})
+  let t = await Transaction.find({}).populate("user").sort({ createdAt: -1 });
+  console.log(a)
+   res.render('admin-transaction',{customers,user:req.user,t,a,s:s.length,u:u.length});
+}
+exports.cdashboard = async (req, res) =>{
+  let a = await Transaction.find().then(transactions => {
+    const totalAmount = transactions.reduce((sum, tx) => sum + (tx.amount || 0), 0);
+    const totalInNaira = totalAmount / 100;
+    
+    console.log('Total Amount in Naira:', totalInNaira);
+    return totalInNaira;
+  });
+  
+  let s = await Transaction.find({transaction_type:"subscription"})
+  let u = await User.find({role:"user"})
+   res.render('customers',{customers,user:req.user,a,s:s.length,u:u.length});
 }
 
 exports.dash = async (req, res) =>{
